@@ -1,7 +1,6 @@
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, user-scalable=no">
 <body oncontextmenu="return false">
 <style>
-
 body {
    user-select: none;    
    -moz-user-select: none;    
@@ -15,8 +14,28 @@ body {
     top: 0px;
     left: 0px;
 }
+div.fill-screen {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    text-align: center;
+}
+
 </style>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" language="JavaScript">
+    function set_body_height() { // set body height = window height
+        $('body').height($(window).height());
+    }
+    $(document).ready(function() {
+        $(window).bind('resize', set_body_height);
+        set_body_height();
+    });
+</script>
 <script>
+
 const view = (() => {
   const matrix = [1, 0, 0, 1, 0, 0]; // current view transform
   var m = matrix;             // alias 
@@ -85,7 +104,7 @@ function mouseWheelEvent(event) {
     event.preventDefault();
 }
 </script>
-<div class="zoom-within-container">
-<img id="zoomMe" class="zoomables" src="https://uc8a1e720fb84c4484f4dfa117ed.dl.dropboxusercontent.com/cd/0/inline/Bd3uzZWCuMEbsksLcxdNi-LXZJJiJgblv3oD_h4HNYxZ3-IJ_f59A1B5ckemphuY0yocbMV27AtljrnDGREkQLLrJZASUzkj0yOUuv2XHcbqXmaiTGJLGVzd6QxD_Fmuomt4NmNGed3GiTgX2B7qt42H/file#" style="width:100%; height:100%;">
+<div class="div.fill-screen">
+<img id="zoomMe" class="zoomables" src="https://uc8a1e720fb84c4484f4dfa117ed.dl.dropboxusercontent.com/cd/0/inline/Bd3uzZWCuMEbsksLcxdNi-LXZJJiJgblv3oD_h4HNYxZ3-IJ_f59A1B5ckemphuY0yocbMV27AtljrnDGREkQLLrJZASUzkj0yOUuv2XHcbqXmaiTGJLGVzd6QxD_Fmuomt4NmNGed3GiTgX2B7qt42H/file#" style="max-width:100%;height:auto;">
 </div>
 </body>
