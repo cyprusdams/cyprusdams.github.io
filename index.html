@@ -1,4 +1,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
 <body oncontextmenu="return false">
-<img src="https://uc8a1e720fb84c4484f4dfa117ed.dl.dropboxusercontent.com/cd/0/inline/Bd3uzZWCuMEbsksLcxdNi-LXZJJiJgblv3oD_h4HNYxZ3-IJ_f59A1B5ckemphuY0yocbMV27AtljrnDGREkQLLrJZASUzkj0yOUuv2XHcbqXmaiTGJLGVzd6QxD_Fmuomt4NmNGed3GiTgX2B7qt42H/file#" style="width:100%; height:100%;">
+<style>
+
+body {
+   user-select: none;    
+   -moz-user-select: none;    
+}
+.zoomables {
+    pointer-events: none;
+    border: 1px solid black;
+}
+#zoomMe {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+<script>
+const view = (() => {
+  const matrix = [1, 0, 0, 1, 0, 0]; // current view transform
+  var m = matrix;             // alias 
+  var scale = 1;              // current scale
+  const pos = { x: 0, y: 0 }; // current position of origin
+  var dirty = true;
+  const API = {
+    applyTo(el) {
+      if (dirty) { this.update() }
+      el.style.transform = `matrix(${m[0]},${m[1]},${m[2]},${m[3]},${m[4]},${m[5]})`;
+    },
+    update() {
+      dirty = false;
+      m[3] = m[0] = scale;
+      m[2] = m[1] = 0;
+      m[4] = pos.x;
+      m[5] = pos.y;
+    },
+    pan(amount) {
+      if (dirty) { this.update() }
+       pos.x += amount.x;
+       pos.y += amount.y;
+       dirty = true;
+    },
+    scaleAt(at, amount) { // at in screen coords
+      if (dirty) { this.update() }
+      scale *= amount;
+      pos.x = at.x - (at.x - pos.x) * amount;
+      pos.y = at.y - (at.y - pos.y) * amount;
+      dirty = true;
+    },
+  };
+  return API;
+})();
+
+
+document.addEventListener("mousemove", mouseEvent, {passive: false});
+document.addEventListener("mousedown", mouseEvent, {passive: false});
+document.addEventListener("mouseup", mouseEvent, {passive: false});
+document.addEventListener("mouseout", mouseEvent, {passive: false});
+document.addEventListener("wheel", mouseWheelEvent, {passive: false});
+const mouse = {x: 0, y: 0, oldX: 0, oldY: 0, button: false};
+function mouseEvent(event) {
+    if (event.type === "mousedown") { mouse.button = true }
+    if (event.type === "mouseup" || event.type === "mouseout") { mouse.button = false }
+    mouse.oldX = mouse.x;
+    mouse.oldY = mouse.y;
+    mouse.x = event.pageX;
+    mouse.y = event.pageY;
+    if(mouse.button) { // pan
+        view.pan({x: mouse.x - mouse.oldX, y: mouse.y - mouse.oldY});
+        view.applyTo(zoomMe);
+    }
+    event.preventDefault();
+}
+function mouseWheelEvent(event) {
+    const x = event.pageX - (zoomMe.width / 2);
+    const y = event.pageY - (zoomMe.height / 2);
+    if (event.deltaY < 0) { 
+        view.scaleAt({x, y}, 1.1);
+        view.applyTo(zoomMe);
+    } else { 
+        view.scaleAt({x, y}, 1 / 1.1);
+        view.applyTo(zoomMe);
+    }
+    event.preventDefault();
+}
+</script>
+<div class="zoom-within-container">
+<img id="zoomMe" class="zoomables" src="https://uc8a1e720fb84c4484f4dfa117ed.dl.dropboxusercontent.com/cd/0/inline/Bd3uzZWCuMEbsksLcxdNi-LXZJJiJgblv3oD_h4HNYxZ3-IJ_f59A1B5ckemphuY0yocbMV27AtljrnDGREkQLLrJZASUzkj0yOUuv2XHcbqXmaiTGJLGVzd6QxD_Fmuomt4NmNGed3GiTgX2B7qt42H/file#" style="width:100%; height:100%;">
+</div>
 </body>
