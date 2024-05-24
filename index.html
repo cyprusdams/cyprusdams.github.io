@@ -1,10 +1,16 @@
-<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, user-scalable=no">
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
 <title>Πληρότητα Φραγμάτων</title>
-<body oncontextmenu="return false">
 <style>
 body {
    user-select: none;    
    -moz-user-select: none;    
+   margin: 0;
+   padding: 0;
+   height: 100%;
+   overflow: hidden;
 }
 .zoomables {
     pointer-events: none;
@@ -12,8 +18,8 @@ body {
 }
 #zoomMe {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 div.fill-screen {
     position: fixed;
@@ -23,7 +29,20 @@ div.fill-screen {
     bottom: 0;
     text-align: center;
 }
-
+#playstore-icon {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 150px;
+    height: auto;
+    z-index: 1000;
+}
+#counter {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" language="JavaScript">
@@ -36,7 +55,6 @@ div.fill-screen {
     });
 </script>
 <script>
-
 const view = (() => {
   const matrix = [1, 0, 0, 1, 0, 0]; // current view transform
   var m = matrix;             // alias 
@@ -72,7 +90,6 @@ const view = (() => {
   return API;
 })();
 
-
 document.addEventListener("mousemove", mouseEvent, {passive: false});
 document.addEventListener("mousedown", mouseEvent, {passive: false});
 document.addEventListener("mouseup", mouseEvent, {passive: false});
@@ -105,10 +122,16 @@ function mouseWheelEvent(event) {
     event.preventDefault();
 }
 </script>
+</head>
+<body oncontextmenu="return false">
 <div class="div.fill-screen">
-<img id="zoomMe" class="zoomables" src="https://www.dropbox.com/s/qrcl5uqrdkkfs09/fragmata.png?raw=1" style="max-width:100%;height:auto;">
+    <img id="zoomMe" class="zoomables" src="https://www.dropbox.com/s/qrcl5uqrdkkfs09/fragmata.png?raw=1" style="max-width:100%;height:auto;">
 </div>
+<a id="playstore-icon" href='https://play.google.com/store/apps/details?id=com.cyprusdams.cyprusdams&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+    <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200" height="200"/>
+</a>
+<a id="counter" href="https://clustrmaps.com/site/1bm9j" title="Visit tracker">
+    <img src="//www.clustrmaps.com/map_v2.png?d=53RL5NAMwFsKdN1CmPV56EdAPFzdjDTyM3EPhy-9x3k&cl=ffffff" />
+</a>
 </body>
-
-<a href="https://clustrmaps.com/site/1bm9j"  title="Visit tracker"><img src="//www.clustrmaps.com/map_v2.png?d=53RL5NAMwFsKdN1CmPV56EdAPFzdjDTyM3EPhy-9x3k&cl=ffffff" /></a>
-<center><a href='https://play.google.com/store/apps/details?id=com.cyprusdams.cyprusdams&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200" height="200"/></a></center>
+</html>
