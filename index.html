@@ -106,6 +106,7 @@ document.addEventListener("wheel", mouseWheelEvent, {passive: false});
 document.addEventListener("touchstart", touchEvent, {passive: false});
 document.addEventListener("touchmove", touchEvent, {passive: false});
 document.addEventListener("touchend", touchEvent, {passive: false});
+document.addEventListener("touchcancel", touchEvent, {passive: false});
 
 const mouse = {x: 0, y: 0, oldX: 0, oldY: 0, button: false};
 const touch = {x: 0, y: 0, oldX: 0, oldY: 0, active: false, initialDistance: 0, scale: 1};
@@ -127,15 +128,21 @@ function mouseEvent(event) {
 function touchEvent(event) {
     const touches = event.touches;
     if (touches.length === 1) {
-        if (event.type === "touchstart") { touch.active = true }
-        if (event.type === "touchend" || event.type === "touchcancel") { touch.active = false }
-        touch.oldX = touch.x;
-        touch.oldY = touch.y;
-        touch.x = touches[0].pageX;
-        touch.y = touches[0].pageY;
-        if(touch.active) { // pan
-            view.pan({x: touch.x - touch.oldX, y: touch.y - touch.oldY});
+        if (event.type === "touchstart") { 
+            touch.active = true;
+            touch.oldX = touches[0].pageX;
+            touch.oldY = touches[0].pageY;
+        }
+        if (event.type === "touchend" || event.type === "touchcancel") { 
+            touch.active = false;
+        }
+        if (event.type === "touchmove" && touch.active) {
+            const newX = touches[0].pageX;
+            const newY = touches[0].pageY;
+            view.pan({x: newX - touch.oldX, y: newY - touch.oldY});
             view.applyTo(zoomMe);
+            touch.oldX = newX;
+            touch.oldY = newY;
         }
     } else if (touches.length === 2) {
         if (event.type === "touchstart") {
