@@ -151,7 +151,8 @@ function touchEvent(event) {
         } else if (event.type === "touchmove") {
             const newDistance = getDistance(touches);
             const zoomFactor = newDistance / touch.initialDistance;
-            view.scaleAt({x: (touches[0].pageX + touches[1].pageX) / 2, y: (touches[0].pageY + touches[1].pageY) / 2}, zoomFactor);
+            const midPoint = getMidpoint(touches);
+            view.scaleAt(midPoint, zoomFactor);
             view.applyTo(zoomMe);
             touch.initialDistance = newDistance;  // Update initial distance for smooth zoom
         }
@@ -163,6 +164,13 @@ function getDistance(touches) {
     const dx = touches[0].pageX - touches[1].pageX;
     const dy = touches[0].pageY - touches[1].pageY;
     return Math.sqrt(dx * dx + dy * dy);
+}
+
+function getMidpoint(touches) {
+    return {
+        x: (touches[0].pageX + touches[1].pageX) / 2,
+        y: (touches[0].pageY + touches[1].pageY) / 2
+    };
 }
 
 function mouseWheelEvent(event) {
