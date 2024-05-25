@@ -128,7 +128,7 @@ function touchEvent(event) {
     const touches = event.touches;
     if (touches.length === 1) {
         if (event.type === "touchstart") { touch.active = true }
-        if (event.type === "touchend") { touch.active = false }
+        if (event.type === "touchend" || event.type === "touchcancel") { touch.active = false }
         touch.oldX = touch.x;
         touch.oldY = touch.y;
         touch.x = touches[0].pageX;
@@ -161,13 +161,13 @@ function getDistance(touches) {
 function mouseWheelEvent(event) {
     const x = event.pageX - (zoomMe.width / 2);
     const y = event.pageY - (zoomMe.height / 2);
+    const zoomAmount = 1.05;
     if (event.deltaY < 0) { 
-        view.scaleAt({x, y}, 1.1);
-        view.applyTo(zoomMe);
+        view.scaleAt({x, y}, zoomAmount);
     } else { 
-        view.scaleAt({x, y}, 1 / 1.1);
-        view.applyTo(zoomMe);
+        view.scaleAt({x, y}, 1 / zoomAmount);
     }
+    view.applyTo(zoomMe);
     event.preventDefault();
 }
 </script>
