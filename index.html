@@ -152,9 +152,9 @@ function touchEvent(event) {
             const newDistance = getDistance(touches);
             const zoomFactor = newDistance / touch.initialDistance;
             const midPoint = getMidpoint(touches);
-            view.scaleAt(midPoint, zoomFactor);
+            view.scaleAt(midPoint, zoomFactor / touch.scale);
             view.applyTo(zoomMe);
-            touch.initialDistance = newDistance;  // Update initial distance for smooth zoom
+            touch.scale = zoomFactor;
         }
     }
     event.preventDefault();
