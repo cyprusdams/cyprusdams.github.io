@@ -151,9 +151,9 @@ function touchEvent(event) {
         } else if (event.type === "touchmove") {
             const newDistance = getDistance(touches);
             const zoomFactor = newDistance / touch.initialDistance;
-            view.scaleAt({x: touch.x, y: touch.y}, zoomFactor / touch.scale);
+            view.scaleAt({x: (touches[0].pageX + touches[1].pageX) / 2, y: (touches[0].pageY + touches[1].pageY) / 2}, zoomFactor);
             view.applyTo(zoomMe);
-            touch.scale = zoomFactor;
+            touch.initialDistance = newDistance;  // Update initial distance for smooth zoom
         }
     }
     event.preventDefault();
